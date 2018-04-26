@@ -116,7 +116,9 @@ export default {
     handelEditorBookMessage(type, bookId, item) {
       let t = this;
       t.$store.commit("list/updateBookDeatil", item);
-      t.$router.push({ path: "/list/add-list" });
+      setTimeout(function() {
+        t.$router.push({ path: "/list/add-list" });
+      }, 1000)
     },
     handleCurrentChange(page) {
       this.$store.commit("list/updateConditions", { p: page });

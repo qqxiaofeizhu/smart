@@ -6,7 +6,9 @@ let postUrl = {
     ajaxDelteUsers: '/bookstore/delete-users',
     ajaxSetOrdinaryToSuper:'/bookstore/set-ordinary-to-super',
     ajaxGetUserMessage: '/bookstore/get-user-message',
-    ajaxGetUserBorrow: '/bookstore/get-user-all-borrow-books'
+    ajaxGetUserBorrow: '/bookstore/get-user-all-borrow-books',
+    ajaxReturnBook: '/bookstore/return-the-book',
+    ajaxChangeUserPassword: '/bookstore//change-user-password'
 }
 /**
  *用户注册User registration
@@ -90,6 +92,42 @@ export const setOrdinaryToSuper = ({commit, state}, postData) => {
  export const ajaxGetPersonal = ({commit, state}, postData) => {
      let url = ''
      if (postData == 0) {
-        
-     }
+        url = postUrl.ajaxGetUserBorrow;
+     } else if(postData == 1){
+        url = postUrl.ajaxGetUserBorrow;
+        return Vue.prototype.$http({
+            method: 'get',
+            url: url,
+         }).then(function(res) {
+             const resp = res.data;
+             return resp;
+         })
+     } else {
+        url = postUrl.ajaxGetUserBorrow;
+     }      
+ }
+ 
+ export const ajaxReturnBook = ({commit, state}, postData) => {
+    return Vue.prototype.$http({
+        method: 'post',
+        url: postUrl.ajaxReturnBook,
+        data: postData
+     }).then(function(res) {
+         const resp = res.data;
+         return resp;
+     })
+ }
+
+ /**
+  * 修改密码
+  */
+ export const ChangeUserPassword = ({commit, state}, postData) => {
+    return Vue.prototype.$http({
+        method: 'post',
+        url: postUrl.ajaxChangeUserPassword,
+        data: postData
+     }).then(function(res) {
+         const resp = res.data;
+         return resp;
+     })
  }

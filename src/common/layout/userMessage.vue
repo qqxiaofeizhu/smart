@@ -14,7 +14,7 @@
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item>
                         <span class="cancellation">
-                            <a href="/list">后台管理</a>
+                            <a href="/personal">后台管理</a>
                         </span>
                     </el-dropdown-item>
                     <el-dropdown-item>

@@ -7,7 +7,8 @@ import Error from '../components/error/error'
 import list from '../components/list/index'
 import userManagement from '../components/admin/users'
 import booklist from '../components/front/index'
-import Personal  from '../components/admin/personal'
+import Personal from '../components/admin/personal'
+import Notice from '../components/notice/index.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -39,6 +40,20 @@ export default new Router({
       component: addBookList
     },
     {
+      path: '/users',
+      name: 'userManagement',
+      component: userManagement
+    }, {
+      path: '/personal',
+      name: 'personal',
+      component: Personal
+    },
+    {
+      path: '/notice',
+      name: 'Notice',
+      component: Notice
+    },
+    {
       path: '/404',
       name: 'error',
       component: Error
@@ -46,15 +61,6 @@ export default new Router({
     {
       path: '*',
       redirect: '/404'
-    },
-    {
-      path: '/users',
-      name: 'userManagement',
-      component: userManagement
-    },{
-      path: '/personal',
-      name: 'personal',
-      component: Personal
     }
   ]
 })

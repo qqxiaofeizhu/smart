@@ -86,7 +86,7 @@ export default {
                   message: "登录成功",
                   type: "success"
                 });
-                _that.$router.push({path: 'list'});
+                _that.$router.push({path: '/'});
               } else {
                 _that.$message({
                   message: res.data.message,

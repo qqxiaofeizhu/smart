@@ -1,4 +1,5 @@
 export const getBookListModel = (state) => {
+    console.log(state.bookDetail)
     return state.bookDetail;  
 }
 export const getBookProtoType = (state) => {

@@ -1,37 +1,38 @@
 <template>
 <div class="tac">
-  <el-menu 
-    default-active="1-4-1" 
+  <el-menu
+    default-active="2"
     @open="handleOpen" 
     @close="handleClose" 
     :collapse="isCollapse"
     style="padding-top: 20px"
+    @select=handleSelect()
   >
-    <el-submenu index="1" v-if="userMessage.admin > 0">
+    <el-submenu index="1">
+        <template slot="title">
+          <i class="el-icon-menu"></i>
+          <span slot="title" @click="handlePesernoalMessage()">个人信息</span>
+        </template>
+      </el-submenu>
+    <el-submenu index="2" v-if="userMessage.admin > 0">
       <template slot="title">
         <i class="el-icon-location"></i>
         <span slot="title" @click="handleUserManagement()">用户管理</span>
       </template>
     </el-submenu>
-    <el-submenu index="2" v-if="userMessage.admin > 0">
+    <el-submenu index="3" v-if="userMessage.admin > 0">
         <template slot="title">
           <i class="el-icon-menu"></i>
-          <a slot="title" href="/list">图书管理</a>
+          <span slot="title" @click="handleList()">图书管理</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="2-1"><span slot="title" @click="handleEntry()">录入</span></el-menu-item>
+          <el-menu-item index="3-1"><span slot="title" @click="handleEntry()">录入</span></el-menu-item>
         </el-menu-item-group>
       </el-submenu>
-    <el-submenu index="3">
+    <el-submenu index="4" v-if="userMessage.admin > 0">
         <template slot="title">
           <i class="el-icon-menu"></i>
           <span slot="title" @click="handleNotice()">公告管理</span>
-        </template>
-      </el-submenu>
-    <el-submenu index="4">
-        <template slot="title">
-          <i class="el-icon-menu"></i>
-          <span slot="title" @click="handlePesernoalMessage()">个人信息</span>
         </template>
       </el-submenu>
   </el-menu>
@@ -51,10 +52,12 @@
 
 <script>
 import { mapGetters } from "vuex";
+import index from 'vue';
 export default {
   data() {
     return {
-      isCollapse: false
+      isCollapse: false,
+      active: "1",
     };
   },
   computed: {
@@ -82,6 +85,16 @@ export default {
     // 个人信息
     handlePesernoalMessage() {
       this.$router.push({ path: "/personal" });
+    },
+    handleNotice() {
+      this.$router.push({ path: "/notice" });
+    },
+    handleList() {
+      this.$router.push({ path: "/list" });
+    },
+    handleSelect() {
+      this.active = index + '';
+      console.log(index, indexPath)
     }
   }
 };

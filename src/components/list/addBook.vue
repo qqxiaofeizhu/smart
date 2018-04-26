@@ -1,12 +1,13 @@
 <template>
   <div>
     <bs-header>
+    </bs-header>
+    <p>{{bookList}}{{bookListModel }}</p>
+    <bs-container>
       <el-col :span="15">
         <h1 class="base-header" v-if="bookListModel._id">编辑</h1>
         <h1 class="base-header" v-else>录入</h1>
       </el-col>
-    </bs-header>
-    <bs-container v-if="bookList.length > 0">
       <el-form :model="bookListModel" status-icon ref="bookListForm">
         <el-col :span="15">
 `        <el-form-item
@@ -51,9 +52,11 @@ export default {
   },
   beforeMount() {
     let t = this;
+    console.log('come into there')
+    console.log(t.bookListModeles);
     t.bookListModel = JSON.parse(JSON.stringify(t.bookListModeles));
     console.log(t.bookProtoType);
-    t.bookList = t.bookProtoType;
+    t.bookList = JSON.parse(JSON.stringify(t.bookProtoType));
   },
   methods: {
     submitForm(formName) {

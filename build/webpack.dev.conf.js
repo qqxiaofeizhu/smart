@@ -29,7 +29,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         // { from: /.*/, to: path.join(config.dev.assetsPublicPath, 'index.html') },
         // { from: /^\/list.*$/, to:path.join(config.dev.assetsPublicPath, 'list.html')},
         // {from: /}
-        {from: '/^\/list\/.*$', to:path.join(config.dev.assetsPublicPath, 'list.html')}
+        {from: '/^\/list\/.*$', to:path.join(config.dev.assetsPublicPath, 'index.html')}
       ],
     },
     hot: true,

@@ -1,8 +1,9 @@
 // 更新编辑数据
 export const updateBookDeatil = (state, payLoad) => {
-    payLoad.isleave = payLoad.isleave ?  1 : 0;
+    console.log('1');
     delete payLoad.__v;
     state.bookDetail = payLoad;
+    console.log(state.bookDetail)
 }
 export const updateBookProtoType = (state, payLoad) => {
     state.bookProtoType = payLoad;

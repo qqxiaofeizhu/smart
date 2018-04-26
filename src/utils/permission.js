@@ -9,7 +9,7 @@ NProgress.configure({ showSpinner: false })// NProgress Configuration
 
 // 设置免登录白名单
 const whiteList = ['/login','/register', '/'];
-
+const notAdminList = ['/personal']
 router.beforeEach((to, from, next) => {
     NProgress.start();
     if (getToken()) {
@@ -19,15 +19,27 @@ router.beforeEach((to, from, next) => {
             NProgress.done();
         } else {
             if(store.getters['user/getUserMessage'].username == "") {
-              // 去请求数据
-              (async function () {
-                  await store.dispatch('user/ajaxGetUserMessage');
-              })()
+                (async function () {
+                    await store.dispatch('user/ajaxGetUserMessage');
+                })()                
             }
-            next();
+            if (notAdminList.indexOf(to.path) !== -1) { // 在免登录白名单，直接进入
+                next()
+            } else {
+                console.log(store.getters['user/getUserMessage'])
+                console.log(whiteList.indexOf(to.path) !== -1)
+                if (whiteList.indexOf(to.path) !== -1 || store.getters['user/getUserMessage'].admin > 0) {
+                    next();
+                    NProgress.done();
+                    return;
+                    
+                }
+                router.go(-1)
+            }
             NProgress.done();
         }
     } else {
+        console.log('into there')
         if (whiteList.indexOf(to.path) !== -1) { // 在免登录白名单，直接进入
             next()
         } else {

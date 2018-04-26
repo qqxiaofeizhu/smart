@@ -2,10 +2,21 @@
   <div class="container">
     <bs-header></bs-header>
     <el-container>
-      <el-aside></el-aside>
+      <el-aside>
+        <p class="notice-line">公告</p>
+        <ul class="noticeCointer">
+          <li v-for="(item, index) of allNotice" :key="index">
+            <p>            
+              <i class="el-icon-edit" style="color: red"></i>
+              {{item.title}}
+            </p>
+            <el-button type="text" style="color: #F56C6C"  @click="handleDetail(item)">详情</el-button>
+          </li>
+        </ul>
+      </el-aside>
       <el-main>
         <template>
-          <el-carousel indicator-position="outside">
+          <el-carousel indicator-position="outside" class="carousel">
             <el-carousel-item v-for="item in cardImg" :key="item">
               <img :src="item">
             </el-carousel-item>
@@ -13,6 +24,13 @@
         </template>
       </el-main>
     </el-container>
+    <el-dialog
+      :title="detailNotice.title"
+      :visible.sync="centerDialogVisible"
+      width="80%"
+      center>
+      <p v-html="detailNotice.noticeValue"></p>
+    </el-dialog>
     <el-container>
     <el-row class="bookContainer">
       <el-col :span="6" v-for="(item, index) in bookList.data" :key="index">
@@ -26,7 +44,8 @@
                 <time class="time">￥{{item.bookPrice}}</time>
               </p>
               <p class="time">
-                 <time class="time">借阅人数{{item.bookCount}}</time>
+                 <time class="time">库存数量{{item.bookCount}}</time>
+                 <time class="time">借阅人数{{item.isleave}}</time>
                  <time class="time">电子版下载{{item.bookCount}}</time>
               </p>
               <el-button type="text" class="button" @click.stop="handleBorrowing(item._id)">借阅</el-button>
@@ -45,18 +64,24 @@
 import bsHeader from "../../common/layout/header";
 import bsContainer from "../../common/layout/center";
 import bsFooter from "../../common/layout/footer";
+import pic1 from "../../assets/baseImage/tushuguan.jpg";
 import pic2 from "../../assets/baseImage/2wpansb62m.jpg";
 import pic3 from "../../assets/baseImage/2d7eo87635.jpg";
+import pic4 from "../../assets/baseImage/shujia.jpg";
 import mainHeader from "../../common/layout/header";
 export default {
   data() {
     return {
-      cardImg: [pic2, pic3],
-      bookList: {}
+      cardImg: [pic1,pic2, pic3,pic4],
+      bookList: {},
+      allNotice: [],
+      centerDialogVisible: false,
+      detailNotice: {}
     };
   },
   beforeMount() {
     this.handleGetBookList();
+    this.handleGetAllNotice();
   },
   methods: {
     handleGetBookList() {
@@ -64,6 +89,23 @@ export default {
       t.$store.dispatch("list/getBookList").then(function(res) {
         t.bookList = res.data;
       });      
+    },
+    handleGetAllNotice() {
+      let t = this;
+      t.$store.dispatch('notice/getAllNotice').then(function(res){
+        if (res.type) {
+          t.$message({
+            message: res.message,
+            type: "success"
+          })
+          t.allNotice = res.data;
+        } else {
+          t.$message({
+            message: res.message,
+            type: "danger"
+          })
+        }
+      })
     },
     handleBorrowing(id) {
       let t = this;
@@ -81,6 +123,10 @@ export default {
           })
         }
       })
+    },
+    handleDetail(item) {
+      this.detailNotice = item;
+      this.centerDialogVisible = !this.centerDialogVisible;
     }
   },
   components: {
@@ -123,16 +169,45 @@ export default {
     }
   }
   .el-aside {
-    width: 300px;
-    height: 100%;
-    min-height: 450px;
-    background: #333;
+    width: 450px !important;
+    height: 300px;
+    padding-top: 20px;
+    overflow: hidden;
+    .notice-line {
+      // background: #409EFF;
+      line-height:20px;
+      border-bottom: 2px solid #409EFF;
+      text-align: center;
+    }
+
+    .noticeCointer {
+      width: 100%;
+      height: 280px;
+      padding: 20px 0;
+      box-sizing: border-box;
+      overflow-y: scroll;
+      li {
+        P {
+        width:100%;
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+       }
+      }
+    }
   }
   .el-main {
-    width: 620px;
+    width: 470px;
     height: 100%;
-    min-height: 450px;
-    background: #333;
+    overflow: hidden;
+    .carousel {
+     width: 470px;
+     height: 100%;
+     img {
+       width:100%;
+       height: 100%;
+     }      
+    }
   }
 }
 </style>

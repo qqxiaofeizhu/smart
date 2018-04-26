@@ -13,6 +13,9 @@
         <el-form-item label="确认密码" prop="repassword">
           <el-input v-model="users.repassword" type="password" placeholder="请再次输入密码" auto-complete="off"></el-input>
         </el-form-item>
+        <el-form-item label="输入密保" prop="encrypted">
+          <el-input v-model="users.encrypted" placeholder="请输入您的密保，以便您后期修改您的密码！" auto-complete="off"></el-input>
+        </el-form-item>
         <p>
           <a href="/login" class="register">已有账号，点此登录</a>
         </p>
@@ -59,7 +62,8 @@ export default {
       users: {
         username: "",
         password: "",
-        repassword: ""
+        repassword: "",
+        encrypted: ""
       },
       userRules: {
         username: [{ validator: username, trigger: "blur" }],
@@ -86,7 +90,8 @@ export default {
           _that.$store.dispatch('user/userRegistration', {
             username: _that.users.username,
             password:  encryption(_that.users.password),
-            repassword : encryption(_that.users.password)
+            repassword : encryption(_that.users.password),
+            encrypted: encryption(_that.users.encrypted)
           }).then(function(res) {
               _that.ajaxLock = false;
               if (res.type) {
