@@ -1,7 +1,7 @@
 <template>
   <div class="container">
         <div class="logo">
-            <img src="../../assets/baseImage/logo.png">
+            <img src="../../assets/baseImage/logo.png" @click="goHome()">
         </div>
         <div class="userMessageContainer" v-if="usersMessage.username !== ''">
             <span class="userMessage">
@@ -57,6 +57,9 @@ export default {
           removeToken();
           this.$store.commit('user/updateUserMessage', '')
           this.$router.push({path: '/login'})
+      },
+      goHome() {
+           this.$router.push({path: '/'})
       }
   },
   computed: {
@@ -101,7 +104,8 @@ export default {
         } 
     }
     .userMessageContainer {
-        flex-basis: 200px;
+        flex-basis: auto;
+        min-width: 240px;
         .userMessage {
             display: inline-block;
             line-height: 60px;

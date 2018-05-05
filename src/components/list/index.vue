@@ -3,13 +3,29 @@
     <bs-header></bs-header>
     <bs-container>
       <div class="container" slot="bs-right">
-          <!-- @sort-change="handlerTableSortChange"
-          @row-click="handlerOpenDetail"
-          @header-dragend="handlerAdjustWidth" -->
+        <div class="container-header">
+          <div class="header-input">
+            <el-input
+              style="width:360px"
+              placeholder="请输入您要搜索的图书名称"
+              v-model="searchBookname">
+              <i slot="prefix" class="el-input__icon el-icon-search"></i>
+            </el-input>
+          </div>
+        <el-select  class="header-select" filterable style="width: 470px" v-model="bookCategory" clearable placeholder="请选择您要查看的图书种类">
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.label">
+          </el-option>
+        </el-select>
+        <el-button  class="header-button" type="primary" @click="filterBook()">确定</el-button>
+        </div>
         <el-table
           :data="bookDataList.data"
           border
-          style="width: 100%"
+          style="width: 100%;cursor: pointer;"
           class="booklist"
           fit
         >
@@ -76,6 +92,7 @@ import bsHeader from "../../common/layout/header";
 import bsContainer from "../../common/layout/center";
 import bsFooter from "../../common/layout/footer";
 import { mapGetters } from "vuex";
+import constData from "../../utils/constData"
 export default {
   beforeMount() {
     let t = this;
@@ -85,7 +102,10 @@ export default {
     return {
       bookDataList: {},
       count: 0,
-      list: ["删除", "编辑"]
+      list: ["删除", "编辑"],
+      bookCategory: '',
+      searchBookname: '',
+      options: constData.options
     };
   },
   computed: {
@@ -94,9 +114,11 @@ export default {
     })
   },
   methods: {
+    filterBook() {
+      this.$store.commit("list/updateConditions", {bookCategory: this.bookCategory, searchBookname: this.searchBookname});
+      this.getBookList();
+    },
     handelOperate(type, bookId, item) {
-      console.log(type);
-      console.log(item);
       if (type == "编辑") {
         this.handelEditorBookMessage(type, bookId, item);
       } else {
@@ -110,15 +132,18 @@ export default {
       t.$http
         .post("bookstore/delate-booklist-by-id", data)
         .then(function(data) {
-          t.getBookList();
+          const resp = data.data;
+          console.log(data.p, data)
+            t.$store.commit("list/updateConditions", { p: resp.p });
+            t.getBookList();
         });
     },
     handelEditorBookMessage(type, bookId, item) {
       let t = this;
-      t.$store.commit("list/updateBookDeatil", item);
-      setTimeout(function() {
+      t.$store.dispatch("list/getAllBookEntry").then(function() {
+        t.$store.commit("list/updateBookDeatil", item);
         t.$router.push({ path: "/list/add-list" });
-      }, 1000)
+      });
     },
     handleCurrentChange(page) {
       this.$store.commit("list/updateConditions", { p: page });
@@ -152,6 +177,21 @@ export default {
 
 <style lang="scss">
 .container {
+  .container-header {
+    width: 100%;
+    padding: 15px 0;
+    display: inline-flex;
+    box-sizing: border-box;
+    .container-header {
+      width: 240px;
+    }
+    .header-select {
+      margin-left: 20px;
+    }
+    .header-button {
+      margin-left: 20px;
+    }
+  }
   .booklist {
     .text {
       width: 100%;

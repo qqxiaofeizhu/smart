@@ -6,7 +6,7 @@
         <el-table
             :data="allUserMessage"
             border
-            style="width: 100%">
+            style="width: 100%; cursor: pointer;">
             <el-table-column
                 prop="username"
                 label="姓名"
@@ -18,19 +18,20 @@
                 width="180">
                 <template slot-scope="scope">
                     <div>
-                        {{scope.row.isAdmin ? '超级管理员' : '普通用户'}}
+                        {{scope.row.isAdmin > 0 ? (scope.row.isAdmin > 100 ? '超级管理员' : '模块管理员') :'普通用户'}}
                     </div>
                     </template>
             </el-table-column>
            <el-table-column
               label="操作"
               min-width="90"
+              v-if="userMessage.admin > 100"
             >
               <template slot-scope="scope" class="handel-operate">
                   <span v-for="(item, index) of list" :key="index" @click="handelOperate(item, scope.row._id, scope.row)">
                     <a style="color: rgb(244, 81, 30);" v-if='item == "删除"'>{{item}}</a>
                     <a v-else>
-                        <span>&nbsp;&nbsp;</span>{{item}}
+                        <span>&nbsp;&nbsp;{{item}}</span>
                     </a>
                   </span>
               </template>
@@ -50,7 +51,7 @@ import { mapGetters } from 'vuex'
 export default {
     data() {
         return {
-            list: ['设为管理员', '设为普通用户', '删除']
+            list: ['设为模块管理员', '设为普通用户', '删除']
         }
     },
     beforeMount() {
@@ -58,7 +59,8 @@ export default {
     },
     computed: {
         ...mapGetters('user', {
-            allUserMessage :'getAllUsersMessage'
+            allUserMessage :'getAllUsersMessage',
+            userMessage: 'getUserMessage'
         })
     },
     components: {
@@ -69,7 +71,6 @@ export default {
     methods: {
         ajaxGetAllUser() {
             this.$store.dispatch('user/getAllUsers').then(function(res) {
-                // console.log(res)
             })
         },
         handelOperate(item, id) {
@@ -93,7 +94,7 @@ export default {
                 return;
             } else {
                 let admin = false;
-                if (item == '设为管理员') {
+                if (item == '设为模块管理员') {
                     admin = true 
                 }
                 t.$store.dispatch('user/setOrdinaryToSuper', {id : id, admin: admin}).then(function(res) {

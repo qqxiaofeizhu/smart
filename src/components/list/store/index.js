@@ -14,7 +14,9 @@ export const listModule = {
            p: 1
        },
        conditions: {
-           p: 1
+           p: 1,
+           bookCategory: '',
+           searchBookname: ''
        },
        token: ''
     },

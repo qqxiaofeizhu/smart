@@ -4,12 +4,9 @@
     <bs-container>
       <div class="container" slot="bs-right">
         <el-tabs type="border-card" @tab-click="handleChangeTab" v-model="activeTab">
-          <el-tab-pane label="个人信息">
-
-          </el-tab-pane>
           <el-tab-pane label="我的借阅">
             <uL>
-              <li v-for="(item, index) of borrrowBooks" :key="item.bookId">
+              <li v-for="item of borrrowBooks" :key="item.bookId">
                 <span>{{item.bookname}}</span>
                 <el-button type="success" size="small" @click="handleReturnBook(item.bookId)">还书</el-button>
               </li>
@@ -93,12 +90,15 @@ export default {
         repassword: [{ validator: repassword, trigger: "blur" }]
       },
       ajaxLock: false
-    }
+    };
   },
   components: {
     "bs-header": bsHeader,
     "bs-container": bsContainer,
     "bs-footer": bsFooter
+  },
+  beforeMount() {
+    this.ajaxGetPersonal(this.activeTab);
   },
   methods: {
     handleChangeTab(ev) {
@@ -107,65 +107,62 @@ export default {
     // 还书
     handleReturnBook(id) {
       let t = this;
-      t.$store.dispatch('user/ajaxReturnBook', {bookId: id}).then(function(res) {
-        if (res.type) {
-          t.$message({
-            type: 'success',
-            message: res.message
-          })
-          t.ajaxGetPersonal(t.activeTab);
-        } else {
-           t.$message({
-              type: 'danger',
+      t.$store
+        .dispatch("user/ajaxReturnBook", { bookId: id })
+        .then(function(res) {
+          if (res.type) {
+            t.$message({
+              type: "success",
               message: res.message
-            })
-        }
-      })
+            });
+            t.ajaxGetPersonal(t.activeTab);
+          } else {
+            t.$message({
+              type: "danger",
+              message: res.message
+            });
+          }
+        });
     },
     ajaxGetPersonal(type) {
       let t = this;
-      t.$store.dispatch('user/ajaxGetPersonal', type).then(function(res) {
-        if (type  == 0) {
+      if (type == 0) {
+        t.$store.dispatch("user/ajaxGetPersonal").then(function(res) {
+          if (res.type) {
             t.$message({
-              type: 'danger',
+              type: "success",
               message: res.message
-            })
-        } else if (type == 1){
-          if(res.type) {
-            t.$message({
-              type: 'success',
-              message: res.message
-            })
+            });
             let bookList = [];
-            for(let [index, item] of res.data.bookIds.entries()) {
+            for (let [index, item] of res.data.bookIds.entries()) {
               let bookItem = {};
-              bookItem.bookname = res.data.booknames[index][0] || '';
-              bookItem.bookId = item[0] || '';
+              bookItem.bookname = res.data.booknames[index][0] || "";
+              bookItem.bookId = item[0] || "";
               bookList.push(bookItem);
             }
             t.borrrowBooks = bookList;
           } else {
             t.$message({
-              type: 'danger',
+              type: "danger",
               message: res.message
-            })
+            });
           }
-        } else {
-
-        }
-      });
+        });
+      }
     },
     submitForm(formName) {
       let _that = this;
       this.$refs[formName].validate(valid => {
         if (valid) {
           _that.ajaxLock = true;
-          _that.$store.dispatch('user/ChangeUserPassword', {
-            username: _that.users.username,
-            password:  encryption(_that.users.password),
-            repassword : encryption(_that.users.password),
-            encrypted: encryption(_that.users.encrypted)
-          }).then(function(res) {
+          _that.$store
+            .dispatch("user/ChangeUserPassword", {
+              username: _that.users.username,
+              password: encryption(_that.users.password),
+              repassword: encryption(_that.users.password),
+              encrypted: encryption(_that.users.encrypted)
+            })
+            .then(function(res) {
               _that.ajaxLock = false;
               if (res.type) {
                 _that.$message({
@@ -173,11 +170,11 @@ export default {
                   type: "success"
                 });
                 removeToken();
-                _that.$store.commit('user/updateUserMessage');
+                _that.$store.commit("user/updateUserMessage");
                 _that.$router.push({ path: "login" });
               } else {
                 _that.$message({
-                  message:  res.message,
+                  message: res.message,
                   type: "danger"
                 });
               }
@@ -187,7 +184,7 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
-    } 
+    }
   }
 };
 </script>

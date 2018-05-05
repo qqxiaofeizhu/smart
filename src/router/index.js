@@ -9,6 +9,7 @@ import userManagement from '../components/admin/users'
 import booklist from '../components/front/index'
 import Personal from '../components/admin/personal'
 import Notice from '../components/notice/index.vue'
+import Analyze from '../components/echarts/index.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -57,6 +58,11 @@ export default new Router({
       path: '/404',
       name: 'error',
       component: Error
+    },
+    {
+      path: '/analyze',
+      name: 'analyze',
+      component: Analyze
     },
     {
       path: '*',

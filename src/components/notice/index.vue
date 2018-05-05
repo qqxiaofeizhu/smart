@@ -24,10 +24,10 @@
                     label="内容"
                     width="420">
                     <template slot-scope="scope">
-                        <el-popover trigger="hover" placement="top">
+                        <el-popover trigger="click" placement="top" width="600">
                             <p v-html="scope.row.noticeValue"></p>
                             <div slot="reference" class="name-wrapper">
-                                <p>公告内容</p>
+                                <p>公告内容,点击产看详情</p>
                             </div>
                         </el-popover>
                     </template>

@@ -34,6 +34,7 @@ export default {
 <style lang="scss" scoped>
 .main-container {
     position: relative;
+    // background: #cccccc;
     box-sizing: border-box;
     background-size: cover;
     overflow: auto;

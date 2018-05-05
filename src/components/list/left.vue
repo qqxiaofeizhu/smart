@@ -29,10 +29,16 @@
           <el-menu-item index="3-1"><span slot="title" @click="handleEntry()">录入</span></el-menu-item>
         </el-menu-item-group>
       </el-submenu>
-    <el-submenu index="4" v-if="userMessage.admin > 0">
+    <el-submenu index="4" v-if="userMessage.admin > 100">
         <template slot="title">
           <i class="el-icon-menu"></i>
           <span slot="title" @click="handleNotice()">公告管理</span>
+        </template>
+      </el-submenu>
+    <el-submenu index="5" v-if="userMessage.admin > 100">
+        <template slot="title">
+          <i class="el-icon-menu"></i>
+          <span slot="title" @click="handleAnalyze()">数据分析</span>
         </template>
       </el-submenu>
   </el-menu>
@@ -95,6 +101,9 @@ export default {
     handleSelect() {
       this.active = index + '';
       console.log(index, indexPath)
+    },
+    handleAnalyze() {
+      this.$router.push({ path: "/analyze" });
     }
   }
 };

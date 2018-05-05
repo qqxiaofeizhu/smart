@@ -11,6 +11,9 @@ import 'element-ui/lib/theme-chalk/index.css'
 import './utils/permission' // permission control
 import axios from './utils/request'
 Vue.config.productionTip = false
+import echarts from 'echarts'
+
+Vue.prototype.$echarts = echarts 
 
 Vue.http = axios
 
