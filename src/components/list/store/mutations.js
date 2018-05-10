@@ -8,6 +8,7 @@ export const updateBookDeatil = (state, payLoad) => {
 }
 export const updateBookProtoType = (state, payLoad) => {
     state.bookProtoType = payLoad;
+    console.log(state.bookProtoType)
 }
 export const updateBookList = (state, payLoad) => {
     state.bookList = payLoad;

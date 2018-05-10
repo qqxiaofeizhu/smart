@@ -45,7 +45,6 @@ export default {
     width: 100%;
     height: 100%;
     padding-right: 30px;
-    opacity: .8;
     display: inline-flex;
     background: url('../../assets/timg.jpg') no-repeat;
     background-size: cover;

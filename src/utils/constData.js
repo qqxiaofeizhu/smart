@@ -19,6 +19,9 @@ export default  {
             label: "F 经济"
         },
         {
+            label: "G 文化、科学、教育、体育"
+        },
+        {
             label: "H 语言、文字"
         },
         {
@@ -71,6 +74,7 @@ export default  {
         "D",
         "E",
         "F",
+        "G",
         "H",
         "I",
         "J",

@@ -33,6 +33,8 @@ router.beforeEach((to, from, next) => {
                 } else {
                     if (notAdminList.indexOf(to.path) !== -1) {
                         next('/personal');
+                    } else {
+                        next()
                     }
                 }
             }

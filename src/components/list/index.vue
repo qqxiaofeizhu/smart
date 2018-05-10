@@ -66,13 +66,14 @@
               min-width="110"
             >
               <template slot-scope="scope" class="handel-operate">
-                  <el-tooltip  placement="top" :content="`${scope.row[item.fieldName]}`" offset="50">
+                  <el-tooltip placement="right-start" :content="`${scope.row[item.fieldName]}`">
                     <p class="text">{{scope.row[item.fieldName]}}</p>
                   </el-tooltip>
               </template>
           </el-table-column>          
           </template>
         </el-table>
+        {{bookDataList.p}}
         <el-pagination
           layout="prev, pager, next"
           :page-count="Math.ceil(bookDataList.count / 10)"
@@ -110,7 +111,8 @@ export default {
   },
   computed: {
     ...mapGetters("list", {
-      bookListData: "getBookListData"
+      bookListData: "getBookListData",
+      conditions: "getConditions"
     })
   },
   methods: {
@@ -128,12 +130,12 @@ export default {
     handelOperateDelate(type, bookId) {
       // 发送删除请求
       let t = this;
-      let data = { id: bookId };
+      let data = this.conditions;
+      data.id = bookId;
       t.$http
         .post("bookstore/delate-booklist-by-id", data)
         .then(function(data) {
-          const resp = data.data;
-          console.log(data.p, data)
+            const resp = data.data;
             t.$store.commit("list/updateConditions", { p: resp.p });
             t.getBookList();
         });

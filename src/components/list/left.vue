@@ -6,7 +6,6 @@
     @close="handleClose" 
     :collapse="isCollapse"
     style="padding-top: 20px"
-    @select=handleSelect()
   >
     <el-submenu index="1">
         <template slot="title">
@@ -63,7 +62,6 @@ export default {
   data() {
     return {
       isCollapse: false,
-      active: "1",
     };
   },
   computed: {
@@ -97,10 +95,6 @@ export default {
     },
     handleList() {
       this.$router.push({ path: "/list" });
-    },
-    handleSelect() {
-      this.active = index + '';
-      console.log(index, indexPath)
     },
     handleAnalyze() {
       this.$router.push({ path: "/analyze" });

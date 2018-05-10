@@ -12,3 +12,6 @@ export const getBookListData = (state) => {
 export const getTokens = (state) => {
     return state.token;
 }
+export const getConditions = (state) => {
+    return state.conditions
+}

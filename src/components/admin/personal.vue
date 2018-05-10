@@ -5,12 +5,33 @@
       <div class="container" slot="bs-right">
         <el-tabs type="border-card" @tab-click="handleChangeTab" v-model="activeTab">
           <el-tab-pane label="我的借阅">
-            <uL>
+            <!-- <uL>
               <li v-for="item of borrrowBooks" :key="item.bookId">
                 <span>{{item.bookname}}</span>
                 <el-button type="success" size="small" @click="handleReturnBook(item.bookId)">还书</el-button>
               </li>
-            </uL>
+            </uL> -->
+            <el-table
+              :data="borrrowBooks"
+              style="width: 100%">
+              <el-table-column
+                type="index"
+                width="50">
+              </el-table-column>
+              <el-table-column
+                prop="bookname"
+                label="书名"
+                width="auto">
+              </el-table-column>
+              <el-table-column label="操作">
+                <template slot-scope="scope">
+                  <el-button
+                    size="mini"
+                    type="success"
+                    @click="handleReturnBook(scope.row.bookId)">还书</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
           </el-tab-pane>
           <el-tab-pane label="密码修改">
             <el-form :model="users" status-icon :rules="userRules" ref="registerForm" class="registerForm">
